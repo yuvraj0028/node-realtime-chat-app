@@ -1,4 +1,5 @@
-const socket = io();
+// Socket.io bağlantısı - uzak sunucu için
+const socket = io(window.location.origin);
 
 // Elements
 const $messageForm = document.querySelector("#message-form");

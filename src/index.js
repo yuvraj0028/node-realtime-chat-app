@@ -1,3 +1,6 @@
+// Load environment variables
+require('dotenv').config();
+
 // emit events
 // socket.emit, io.emit, socket.broadcast.emit
 
@@ -29,6 +32,7 @@ const server = http.createServer(app);
 const io = socketio(server);
 
 const port = process.env.PORT || 3000;
+const host = process.env.HOST || '0.0.0.0'; // Tüm IP'lerden erişime izin ver
 // define paths for express config
 const publicDirectoryPath = path.join(__dirname, "../public");
 
@@ -129,6 +133,6 @@ io.on("connection", (socket) => {
 });
 
 // start the server
-server.listen(port, () => {
-  console.log(`Server is up on port ${port}!`);
+server.listen(port, host, () => {
+  console.log(`Server is up on ${host}:${port}!`);
 });
