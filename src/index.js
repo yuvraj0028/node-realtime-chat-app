@@ -14,7 +14,6 @@ const socketio = require("socket.io");
 const Filter = require("bad-words");
 const {
   generateMessage,
-  generateLocationMessage,
 } = require("./utils/messages");
 
 const {
@@ -114,22 +113,7 @@ io.on("connection", (socket) => {
     }
   });
 
-  socket.on("sendLocation", (coords, callback) => {
-    const user = getUser(socket.id);
 
-    if (!user) {
-      return callback("You are not authenticated");
-    }
-
-    io.to(user.room).emit(
-      "locationMessage",
-      generateLocationMessage(
-        user.username,
-        `https://google.com/maps?q=${coords.Latitude},${coords.Longitude}`
-      )
-    );
-    callback();
-  });
 });
 
 // start the server
