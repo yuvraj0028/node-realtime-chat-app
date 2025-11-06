@@ -4,25 +4,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat App</title>
+    <title>Modern Chat App - Join Chat</title>
     <link rel="icon" href="./img/favicon.png">
     <link rel="stylesheet" href="./css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
 <body>
     <div class="centered-form">
         <div class="centered-form__box">
-            <h1>Join</h1>
-            <form action="./chat.html">
-                <label>Display Name</label>
-                <input type="text" name="username" required>
-                <label>Room</label>
-                <input type="text" name="room" required>
-                <button>Join</button>
+            <div class="logo-container">
+                <i class="fas fa-comments logo-icon"></i>
+                <h1>Chat App</h1>
+                <p class="subtitle">Real-time chat experience</p>
+            </div>
+            
+            <form action="./chat.html" id="join-form">
+                <div class="input-group">
+                    <label for="username">
+                        <i class="fas fa-user"></i>
+                        Username
+                    </label>
+                    <input type="text" name="username" id="username" required 
+                           placeholder="Enter your username" autocomplete="off">
+                </div>
+                
+                <div class="input-group">
+                    <label for="room">
+                        <i class="fas fa-door-open"></i>
+                        Room Name
+                    </label>
+                    <input type="text" name="room" id="room" required 
+                           placeholder="Enter room name to join" autocomplete="off">
+                </div>
+                
+                <button type="submit" id="join-btn">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Join Chat
+                </button>
             </form>
+            
+            
         </div>
-
     </div>
+
+    <script>
+        // Form validation and animations
+        document.getElementById('join-form').addEventListener('submit', function(e) {
+            const username = document.getElementById('username').value.trim();
+            const room = document.getElementById('room').value.trim();
+            const button = document.getElementById('join-btn');
+            
+            if (!username || !room) {
+                e.preventDefault();
+                button.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Please fill all fields';
+                button.style.background = 'linear-gradient(135deg, #f56565, #e53e3e)';
+                setTimeout(() => {
+                    button.innerHTML = '<i class="fas fa-sign-in-alt"></i> Join Chat';
+                    button.style.background = 'linear-gradient(135deg, #667eea, #764ba2)';
+                }, 2000);
+                return;
+            }
+            
+            button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Joining...';
+            button.disabled = true;
+        });
+        
+        // Input focus animations
+        const inputs = document.querySelectorAll('input');
+        inputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.classList.add('focused');
+            });
+            
+            input.addEventListener('blur', function() {
+                if (!this.value) {
+                    this.parentElement.classList.remove('focused');
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>

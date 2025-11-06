@@ -1,3 +1,6 @@
+// Load environment variables
+require('dotenv').config();
+
 // emit events
 // socket.emit, io.emit, socket.broadcast.emit
 
@@ -11,7 +14,6 @@ const socketio = require("socket.io");
 const Filter = require("bad-words");
 const {
   generateMessage,
-  generateLocationMessage,
 } = require("./utils/messages");
 
 const {
@@ -29,6 +31,7 @@ const server = http.createServer(app);
 const io = socketio(server);
 
 const port = process.env.PORT || 3000;
+const host = process.env.HOST || '0.0.0.0'; // Tüm IP'lerden erişime izin ver
 // define paths for express config
 const publicDirectoryPath = path.join(__dirname, "../public");
 
@@ -110,25 +113,10 @@ io.on("connection", (socket) => {
     }
   });
 
-  socket.on("sendLocation", (coords, callback) => {
-    const user = getUser(socket.id);
 
-    if (!user) {
-      return callback("You are not authenticated");
-    }
-
-    io.to(user.room).emit(
-      "locationMessage",
-      generateLocationMessage(
-        user.username,
-        `https://google.com/maps?q=${coords.Latitude},${coords.Longitude}`
-      )
-    );
-    callback();
-  });
 });
 
 // start the server
-server.listen(port, () => {
-  console.log(`Server is up on port ${port}!`);
+server.listen(port, host, () => {
+  console.log(`Server is up on ${host}:${port}!`);
 });
